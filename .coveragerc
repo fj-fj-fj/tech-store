@@ -1,0 +1,23 @@
+[run]
+branch = True
+source = .
+omit =
+    ./venv/*,
+    *admin*,
+    *asgi*,
+    *apps.py,
+    *manage.py,
+    *migrations*,
+    *tests*,
+    *wsgi*,
+    *__init__*
+
+[report]
+fail_under = 90
+show_missing = True
+ignore_errors = True
+exclude_lines =
+    if self.debug:
+    pragma: no cover
+    raise NotImplementedError
+    if __name__ == '__main__':
