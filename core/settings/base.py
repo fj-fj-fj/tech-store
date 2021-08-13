@@ -21,7 +21,9 @@ class BaseConfiguration(Configuration):
         'django.contrib.staticfiles',
     ]
     THIRD_PARTY_APPS: List[str] = []
-    LOCAL_APPS: List[str] = []
+    LOCAL_APPS = [
+        'task_manager',
+    ]
     INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
     MIDDLEWARE = [
@@ -39,7 +41,7 @@ class BaseConfiguration(Configuration):
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
+            'DIRS': ['templates'],
             'APP_DIRS': True,
             'OPTIONS': {
                 'context_processors': [
