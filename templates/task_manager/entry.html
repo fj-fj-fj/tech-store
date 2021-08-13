@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}_-Logio-_{% endblock %}
+
+{% block login %}
+<div class="container gradient">
+<div class="bg-image">
+    <div class="login-modal">
+    <div class="logo-image">
+        <img height="79" src="{% static 'image/logio-logo.png' %}" alt="logo">
+    </div>
+    <div class="body-login">
+        <form action="{% url 'todo:login' %}" method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <!-- {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+        {% endfor %} -->
+
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field }}
+        {% endfor %}
+        <button value="Войти">Войти</button>
+        </form>
+    </div>
+    <div class="under-text-modal">
+        <p>
+        Нет учетной записи? <br>
+        Начните создавать! <a class="a-text" href="#">Зарегистрируйтесь!</a>
+        </p>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock %}

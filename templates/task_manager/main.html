@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Body{% endblock %}
+
+{% block login %}
+  <div class="container-body">
+
+    <div class="header">
+      <div class="logo-block">
+        <a href="#"><img src="{% static 'image/logio-logo.png' %}" alt="logo"></a>
+      </div>
+    </div>
+
+  <div class="container-main">
+
+  <div class="user-project-block">
+    <div class="user-block">
+      <div class="avatar-block">
+        <img src="{% static 'image/avatar-1.png' %}" alt="avatar">
+      </div>
+      <div class="name-user">
+        <a href="#"><p>Иван Петров</p> </a>
+      </div>
+      <div class="notice-block">
+        <div class="exit-btn">
+          <a href="{% url 'todo:login' %}"><img src="{% static 'image/Vector.png' %}" alt="exit"></a>
+        </div>
+        <div class="bell-btn">
+          <a href="#"><img src="{% static 'image/Group 16.png' %}" alt="bell"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-proj-block">
+
+    <div class="project-block">
+      <div class="name-project-block">
+        <div class="img-proj">
+          <a href="#"><img src="{% static 'image/cup-img.png' %}" alt="cup-img"></a>
+        </div>
+        <div class="name-proj">
+          <a href="#"><p>Сайт ElectroClub</p></a>
+        </div>
+        <div class="other-proj-dots">
+          <a href="#"><img src="{% static 'image/black-dots.png' %}" alt="black-dots"></a>
+        </div>
+      </div>
+    </div>
+    <div class="project-block">
+      <div class="name-project-block">
+        <div class="img-proj">
+          <a href="#"><img src="{% static 'image/bukashka-img.png' %}" alt="bukashka"></a>
+        </div>
+        <div class="name-proj">
+          <a href="#"><p>Тестировка БД</p></a>
+        </div>
+        <div class="other-proj-dots">
+          <a href="#"><img src="{% static 'image/black-dots.png' %}" alt="black-dots"></a>
+        </div>
+      </div>
+    </div>
+    <div class="project-block">
+      <div class="name-project-block">
+        <div class="img-proj">
+          <a href="#"><img src="{% static 'image/rain-img.png' %}" alt="rain-img"></a>
+        </div>
+        <div class="name-proj">
+          <a href="#"><p>Маркетинг</p></a>
+        </div>
+        <div class="other-proj-dots">
+          <a href="#"><img src="{% static 'image/black-dots.png' %}" alt="black-dots"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="add-proj">
+      <div class="proj-btn">
+        <a href="#"><img height="30" src="{% static 'image/black-plus-btn.png' %}" alt="plus">
+        <p>добавить новый проект</p> </a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="main-block">
+
+<!-- тут будут сами задачи -->
+
+  </div>
+
+  <div class="team-user">
+    {% for employee in  object_list %}
+      <div class="team-user-img">
+        <a href="#">
+          <img src="{% static employee.avatar.url %}" alt="avatar">
+        </a>
+        <div class="number-task">
+          <p>1</p>
+        </div>
+      </div>
+    {% endfor %}
+
+    <div class="add-user-team">
+      <a href=""><img height="30" src="{% static 'image/plus-btn.png' %}" alt="plus"></a>
+    </div>
+  </div>
+
+  </div>
+
+</div>
+{% endblock %}
