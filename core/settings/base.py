@@ -93,4 +93,5 @@ class BaseConfiguration(Configuration):
         BASE_DIR / 'static',
     )
 
+    AUTH_USER_MODEL = 'accounts.user'
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
