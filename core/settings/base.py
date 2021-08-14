@@ -22,6 +22,7 @@ class BaseConfiguration(Configuration):
     ]
     THIRD_PARTY_APPS: List[str] = []
     LOCAL_APPS = [
+        'accounts',
         'task_manager',
     ]
     INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
