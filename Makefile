@@ -1,23 +1,24 @@
 PROJECT_ROOT = .
+CMD = poetry run
 
 run:
-	poetry run ipython
+	$(CMD) ./manage.py runserver
 
 style:
-	poetry run flake8 $(PROJECT_ROOT)
+	$(CMD) flake8 $(PROJECT_ROOT)
 
 types:
-	poetry run mypy $(PROJECT_ROOT)
+	$(CMD) mypy $(PROJECT_ROOT)
 
 isort:
-	poetry run isort $(PROJECT_ROOT)
+	$(CMD) isort $(PROJECT_ROOT)
 
 tests:
-	poetry run ./manage.py test
+	$(CMD) ./manage.py test
 
 check:
 	make -j4 isort style types tests
 
 migrations:
-	python3 manage.py makemigrations
-	python3 manage.py migrate
+	$(CMD) ./manage.py makemigrations
+	$(CMD) ./manage.py migrate

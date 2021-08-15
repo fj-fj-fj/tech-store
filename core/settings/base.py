@@ -1,6 +1,7 @@
 from pathlib import Path
-from typing import List
+from typing import Any, List, Tuple
 
+import snoop
 from configurations import Configuration, values
 
 
@@ -95,3 +96,12 @@ class BaseConfiguration(Configuration):
 
     AUTH_USER_MODEL = 'accounts.user'
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+    # https://pypi.org/project/snoop/#watch_extras
+    def type_watch(source: str, value: Any) -> Tuple[str, Any]:
+        return f'type({source})', type(value)
+    
+    # `snoop`, `pp`, and `spy` will be available in every file without needing to import them
+    # https://pypi.org/project/snoop/#install
+    snoop.install(enabled=DEBUG, watch_extras=[type_watch])
