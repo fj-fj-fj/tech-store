@@ -15,13 +15,13 @@ class Development(BaseConfiguration):
     EMAIL_BACKEND = values.Value('django.core.mail.backends.console.EmailBackend')
 
     @property
-    def INSTALLED_APPS(self) -> List[str]:
+    def INSTALLED_APPS(self) -> List[str]:  # type: ignore
         return super().INSTALLED_APPS + [
             'debug_toolbar',
         ]
 
     @property
-    def MIDDLEWARE(self) -> List[str]:
+    def MIDDLEWARE(self) -> List[str]:  # type: ignore
         return super().MIDDLEWARE + [
             'debug_toolbar.middleware.DebugToolbarMiddleware',
         ]

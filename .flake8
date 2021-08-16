@@ -6,3 +6,5 @@ exclude =
     .git,
     */migrations/*,
     tests
+per-file-ignores =
+    **/models.py: VNE003

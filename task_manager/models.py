@@ -7,7 +7,7 @@ class Avatar(models.Model):
     name = models.CharField('Наименование', max_length=100)
     url = models.CharField('Ссылка', max_length=200)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     class Meta:
@@ -41,7 +41,7 @@ class Employee(models.Model):
     deleted = models.BooleanField('Удалён', default=False)
     rate = models.FloatField('Рэйтинг', default=0.)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Сотрудник: {self.username} | Ник: {self.name}'
 
     class Meta:
@@ -62,7 +62,7 @@ class EmployeeType(models.Model):
     id = models.BigAutoField('Идентификатор', primary_key=True)
     name = models.CharField('Наименование', max_length=100)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     class Meta:
@@ -97,7 +97,7 @@ class Project(models.Model):
     deleted = models.BooleanField('Удалён', default=False)
     last_update = models.DateTimeField('Обновлён', auto_now=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Проект: {self.name}, автор: {self.author.name}'
 
     class Meta:
@@ -132,7 +132,7 @@ class ProjectEmployee(models.Model):
         verbose_name='Квалификация'
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Сотрудник: {self.employee.name} в проекте: {self.project.name}'
 
     class Meta:
@@ -157,7 +157,7 @@ class ProjectType(models.Model):
     name = models.CharField('Наименование', max_length=100)
     description = models.CharField('Описание', max_length=250)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Тип проекта: {self.name}'
 
     class Meta:
@@ -170,7 +170,7 @@ class Tag(models.Model):
 
     name = models.CharField('Название тэга', primary_key=True, max_length=20)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Тэг: {self.name}'
 
     class Meta:
@@ -215,7 +215,7 @@ class Task(models.Model):
     )
     last_update = models.DateTimeField('Обновлён', auto_now=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (f'Задача: {self.name}, автор: {self.author.employee.name},'
                 ' исполнитель: {self.executor.employee.name}')
 
@@ -268,7 +268,7 @@ class TaskComment(models.Model):
     )
     last_update = models.DateTimeField('Обновлено', auto_now=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Комментарий {self.id} к задаче: "{self.task.name}" от {self.employee.name}'
 
     class Meta:
@@ -308,7 +308,7 @@ class TaskEmployee(models.Model):
         verbose_name='Сотрудник'
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Задача: {self.task.name} (проект:{self.project.name}) для {self.employee.name}'
 
     class Meta:
@@ -357,7 +357,7 @@ class TaskFile(models.Model):
     )
     last_update = models.DateTimeField('Обновлено', auto_now=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.filename
 
     class Meta:
@@ -387,7 +387,7 @@ class TaskStatus(models.Model):
         verbose_name='Описание'
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     class Meta:
@@ -415,7 +415,7 @@ class TaskTag(models.Model):
         verbose_name='Название'
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Тэг: {self.name.name} для задачи: {self.task.name}'
 
     class Meta:

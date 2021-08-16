@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.models.query import QuerySet
 
 from task_manager.models import Employee
 
@@ -27,7 +28,7 @@ class EmployeeForm(forms.Form):
         )
     )
 
-    def clean(self):
+    def clean(self) -> 'QuerySet[Employee]':  # type: ignore
         employee = Employee.objects.filter(
             username=self.cleaned_data.get('username'),
             password=self.cleaned_data.get('password'),

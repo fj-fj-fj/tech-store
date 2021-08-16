@@ -3,7 +3,7 @@ from configurations import values
 from core.settings.base import BaseConfiguration
 
 
-class Production(BaseConfiguration):  
+class Production(BaseConfiguration):
 
     DEBUG = False
 
