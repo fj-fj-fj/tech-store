@@ -3,7 +3,6 @@ from django.db import models
 
 class Avatar(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     name = models.CharField('Наименование', max_length=100)
     url = models.CharField('Ссылка', max_length=200)
 
@@ -18,7 +17,6 @@ class Avatar(models.Model):
 
 class Employee(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     name = models.CharField('Никнэйм', max_length=100, default='')
     username = models.CharField('Имя', max_length=200, default='')
     password = models.CharField('Пароль', max_length=250)
@@ -49,17 +47,19 @@ class Employee(models.Model):
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
         indexes = [
-            models.indexes.Index(fields=['avatar_id']),
+            models.indexes.Index(
+                fields=['avatar_id'],
+                name='employee_avatar',
+            ),
             models.indexes.Index(
                 fields=['curator_id'],
-                name='curator_employee_id',
+                name='employee_curator',
             ),
         ]
 
 
 class EmployeeType(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     name = models.CharField('Наименование', max_length=100)
 
     def __str__(self) -> str:
@@ -73,7 +73,6 @@ class EmployeeType(models.Model):
 
 class Project(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     project_type = models.ForeignKey(
         'ProjectType',
         on_delete=models.DO_NOTHING,
@@ -105,12 +104,18 @@ class Project(models.Model):
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
         indexes = [
-            models.indexes.Index(fields=['avatar_id']),
+            models.indexes.Index(
+                fields=['avatar_id'],
+                name='project_avatar,'
+            ),
             models.indexes.Index(
                 fields=['author_id'],
-                name='author_employee_id',
+                name='project_author',
             ),
-            models.indexes.Index(fields=['project_type_id']),
+            models.indexes.Index(
+                fields=['project_type_id'],
+                name='project_projecttype,'
+            ),
         ]
 
 
@@ -140,20 +145,25 @@ class ProjectEmployee(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['project', 'employee'],
-                name='project_employee_id',
+                name='uk_project_employee',
             ),
         ]
         verbose_name = 'Менеджер с доступным проектом'
         verbose_name_plural = 'Менеджеры с доступными проектами'
         indexes = [
-            models.indexes.Index(fields=['employee_type_id']),
-            models.indexes.Index(fields=['employee_id']),
+            models.indexes.Index(
+                fields=['employee_type_id'],
+                name='projectemployee_employeetype',
+            ),
+            models.indexes.Index(
+                fields=['employee_id'],
+                name='projectemployee_employee',
+            ),
         ]
 
 
 class ProjectType(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     name = models.CharField('Наименование', max_length=100)
     description = models.CharField('Описание', max_length=250)
 
@@ -181,7 +191,6 @@ class Tag(models.Model):
 
 class Task(models.Model):
 
-    id = models.IntegerField('Идентификатор', primary_key=True)
     date_create = models.DateTimeField('Дата создания', auto_now_add=True)
     project = models.OneToOneField(
         ProjectEmployee,
@@ -224,31 +233,45 @@ class Task(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['project', 'id'],
-                name='project_id',
+                name='uk_project_project_id',
             ),
         ]
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
         indexes = [
-            models.indexes.Index(fields=['author_id']),
-            models.indexes.Index(fields=['task_status_id']),
-            models.indexes.Index(fields=['parent_id']),
-            models.indexes.Index(fields=['project_id', 'parent_id']),
-            models.indexes.Index(fields=['executor_id']),
+            models.indexes.Index(
+                fields=['author_id'],
+                name='task_author',
+            ),
+            models.indexes.Index(
+                fields=['task_status_id'],
+                name='task_taskstatus',
+            ),
+            models.indexes.Index(
+                fields=['parent_id'],
+                name='task_parent',
+            ),
+            models.indexes.Index(
+                fields=['project_id', 'parent_id'],
+                name='task_project_parent',
+            ),
+            models.indexes.Index(
+                fields=['executor_id'],
+                name='task_executor',
+            ),
             models.indexes.Index(
                 fields=['project_id', 'author_id'],
-                name='task_ibfk_2',
+                name='task_project_author',
             ),
             models.indexes.Index(
                 fields=['project_id', 'executor_id'],
-                name='project_id_2',
+                name='task_project_executor',
             ),
         ]
 
 
 class TaskComment(models.Model):
 
-    id = models.PositiveIntegerField('Идентификатор', primary_key=True)
     date_create = models.DateTimeField('Дата создания', auto_now_add=True)
     project = models.ForeignKey(
         Project,
@@ -276,16 +299,18 @@ class TaskComment(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['task', 'project', 'id'],
-                name='task_project_id',
+                name='uk_task_project_id',
             ),
         ]
         verbose_name = 'Комментарий к задаче'
         verbose_name_plural = 'Комментарии к задачам'
         indexes = [
-            models.indexes.Index(fields=['employee_id']),
+            models.indexes.Index(
+                fields=['employee_id'],
+                name='taskcomment_employee'),
             models.indexes.Index(
                 fields=['project_id', 'task_id'],
-                name='project_id',
+                name='taskcomment_project_task',
             ),
         ]
 
@@ -316,20 +341,25 @@ class TaskEmployee(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['project', 'task', 'employee'],
-                name='project_task_employee',
+                name='uk_project_task_employee',
             ),
         ]
         verbose_name = 'Задача для сотрудников'
         verbose_name_plural = 'Задачи для сотрудников'
         indexes = [
-            models.indexes.Index(fields=['project_id', 'employee_id']),
-            models.indexes.Index(fields=['employee_id']),
+            models.indexes.Index(
+                fields=['project_id', 'employee_id'],
+                name='taskemployee_project_employee',
+            ),
+            models.indexes.Index(
+                fields=['employee_id'],
+                name='taskemployee_employee',
+            ),
         ]
 
 
 class TaskFile(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     project = models.OneToOneField(
         TaskComment,
         on_delete=models.DO_NOTHING,
@@ -365,21 +395,29 @@ class TaskFile(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['project', 'task', 'id'],
-                name='project_task_id',
+                name='uk_project_task_id',
             ),
         ]
         verbose_name = 'Файл с задачей'
         verbose_name_plural = 'Файлы с задачами'
         indexes = [
-            models.indexes.Index(fields=['employee_id']),
-            models.indexes.Index(fields=['task_comment_id']),
-            models.indexes.Index(fields=['project_id', 'task_id', 'task_comment_id']),
+            models.indexes.Index(
+                fields=['employee_id'],
+                name='taskfile_employee',
+            ),
+            models.indexes.Index(
+                fields=['task_comment_id'],
+                name='taskfile_task_comment',
+            ),
+            models.indexes.Index(
+                fields=['project_id', 'task_id', 'task_comment_id'],
+                name='taskfile_project_task_taskcom',
+            ),
         ]
 
 
 class TaskStatus(models.Model):
 
-    id = models.BigAutoField('Идентификатор', primary_key=True)
     name = models.CharField('Наименование', max_length=100)
     description = models.CharField(
         max_length=250,
@@ -423,11 +461,14 @@ class TaskTag(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['project', 'task', 'name'],
-                name='project_task_name',
+                name='uk_project_task_name',
             ),
         ]
         verbose_name = 'Тэг задачи'
         verbose_name_plural = 'Тэги задач'
         indexes = [
-            models.indexes.Index(fields=['name']),
+            models.indexes.Index(
+                fields=['name'],
+                name='taskstag_name',
+            ),
         ]
