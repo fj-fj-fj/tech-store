@@ -1,7 +1,10 @@
 PROJECT_ROOT = .
 CMD = poetry run
 
-run:
+db:
+	sudo service postgresql start
+
+run: db
 	$(CMD) ./manage.py runserver
 
 style:
@@ -22,3 +25,8 @@ check:
 migrations:
 	$(CMD) ./manage.py makemigrations
 	$(CMD) ./manage.py migrate
+
+clean:
+	rm -rf build dist *.egg-info
+	find . -name '*.pyc' -delete
+	find . -name __pycache__ -delete

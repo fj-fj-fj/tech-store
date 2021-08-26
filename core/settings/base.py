@@ -13,6 +13,10 @@ class BaseConfiguration(Configuration):
 
     ALLOWED_HOSTS: List[str] = []
 
+    AUTH_USER_MODEL = 'accounts.User'
+    DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+    DATABASES = values.DatabaseURLValue(environ_name='DATABASE_URL')
+
     DJANGO_APPS = [
         'django.contrib.admin',
         'django.contrib.auth',
@@ -21,7 +25,9 @@ class BaseConfiguration(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
     ]
-    THIRD_PARTY_APPS: List[str] = []
+    THIRD_PARTY_APPS = [
+        'django_extensions',
+    ]
     LOCAL_APPS = [
         'accounts',
         'task_manager',
@@ -58,13 +64,6 @@ class BaseConfiguration(Configuration):
 
     WSGI_APPLICATION = 'core.wsgi.application'
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
     AUTH_PASSWORD_VALIDATORS = [
         {
             'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -93,9 +92,6 @@ class BaseConfiguration(Configuration):
     STATICFILES_DIRS = (
         BASE_DIR / 'static',
     )
-
-    AUTH_USER_MODEL = 'accounts.user'
-    DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
     # https://pypi.org/project/snoop/#watch_extras
     def type_watch(source: str, value: Any) -> Tuple[str, Any]:
