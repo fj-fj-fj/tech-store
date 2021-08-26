@@ -100,3 +100,8 @@ class BaseConfiguration(Configuration):
     # `snoop`, `pp`, and `spy` will be available in every file without needing to import them
     # https://pypi.org/project/snoop/#install
     snoop.install(enabled=DEBUG, watch_extras=[type_watch])
+
+    SILENCED_SYSTEM_CHECKS = [
+        # Allow index names >30 characters, because we aren’t using Oracle
+        'models.E034',
+    ]
