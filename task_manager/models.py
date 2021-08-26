@@ -49,11 +49,11 @@ class Employee(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['avatar_id'],
-                name='employee_avatar',
+                name='employee_avatar_idx',
             ),
             models.indexes.Index(
                 fields=['curator_id'],
-                name='employee_curator',
+                name='employee_curator_idx',
             ),
         ]
 
@@ -106,15 +106,15 @@ class Project(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['avatar_id'],
-                name='project_avatar,'
+                name='project_avatar_idx,'
             ),
             models.indexes.Index(
                 fields=['author_id'],
-                name='project_author',
+                name='project_author_idx',
             ),
             models.indexes.Index(
                 fields=['project_type_id'],
-                name='project_projecttype,'
+                name='project_projecttype_idx,'
             ),
         ]
 
@@ -153,11 +153,11 @@ class ProjectEmployee(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['employee_type_id'],
-                name='projectemployee_employeetype',
+                name='projectemployee_employeetype_idx',
             ),
             models.indexes.Index(
                 fields=['employee_id'],
-                name='projectemployee_employee',
+                name='projectemployee_employee_idx',
             ),
         ]
 
@@ -241,31 +241,31 @@ class Task(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['author_id'],
-                name='task_author',
+                name='task_author_idx',
             ),
             models.indexes.Index(
                 fields=['task_status_id'],
-                name='task_taskstatus',
+                name='task_taskstatus_idx',
             ),
             models.indexes.Index(
                 fields=['parent_id'],
-                name='task_parent',
+                name='task_parent_idx',
             ),
             models.indexes.Index(
                 fields=['project_id', 'parent_id'],
-                name='task_project_parent',
+                name='task_project_parent_idx',
             ),
             models.indexes.Index(
                 fields=['executor_id'],
-                name='task_executor',
+                name='task_executor_idx',
             ),
             models.indexes.Index(
                 fields=['project_id', 'author_id'],
-                name='task_project_author',
+                name='task_project_author_idx',
             ),
             models.indexes.Index(
                 fields=['project_id', 'executor_id'],
-                name='task_project_executor',
+                name='task_project_executor_idx',
             ),
         ]
 
@@ -307,10 +307,10 @@ class TaskComment(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['employee_id'],
-                name='taskcomment_employee'),
+                name='taskcomment_employee_idx'),
             models.indexes.Index(
                 fields=['project_id', 'task_id'],
-                name='taskcomment_project_task',
+                name='taskcomment_project_task_idx',
             ),
         ]
 
@@ -349,11 +349,11 @@ class TaskEmployee(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['project_id', 'employee_id'],
-                name='taskemployee_project_employee',
+                name='taskemployee_project_employee_idx',
             ),
             models.indexes.Index(
                 fields=['employee_id'],
-                name='taskemployee_employee',
+                name='taskemployee_employee_idx',
             ),
         ]
 
@@ -403,15 +403,15 @@ class TaskFile(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['employee_id'],
-                name='taskfile_employee',
+                name='taskfile_employee_idx',
             ),
             models.indexes.Index(
                 fields=['task_comment_id'],
-                name='taskfile_task_comment',
+                name='taskfile_task_comment_idx',
             ),
             models.indexes.Index(
                 fields=['project_id', 'task_id', 'task_comment_id'],
-                name='taskfile_project_task_taskcom',
+                name='taskfile_project_task_taskcomment_idx',
             ),
         ]
 
@@ -469,6 +469,6 @@ class TaskTag(models.Model):
         indexes = [
             models.indexes.Index(
                 fields=['name'],
-                name='taskstag_name',
+                name='taskstag_name_idx',
             ),
         ]
