@@ -12,4 +12,4 @@ class HomePageView(ListView):
 class EntryView(FormView):
     form_class = EmployeeForm
     template_name = 'task_manager/entry.html'
-    success_url = '/main/'
+    success_url = '/tasks/main/'
