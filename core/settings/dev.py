@@ -1,3 +1,4 @@
+import socket
 from typing import List
 
 from configurations import values
@@ -10,7 +11,13 @@ class Development(BaseConfiguration):
     SECRET_KEY = values.SecretValue(environ_name='SECRET_KEY')
 
     ALLOWED_HOSTS = ['*']
-    INTERNAL_IPS = values.ListValue(['localhost', '127.0.0.1', '[::1]'])
+    INTERNAL_IPS = values.ListValue([
+        'localhost',
+        '127.0.0.1',
+        '[::1]',
+        # tricks to have debug toolbar when developing with docker
+        socket.gethostbyname(socket.gethostname())[:-1] + '1'
+    ])
 
     EMAIL_BACKEND = values.Value('django.core.mail.backends.console.EmailBackend')
 
