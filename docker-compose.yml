@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:${POSTGRES_VERSION}
+    container_name: tech-store-postgres
+    volumes:
+      - postres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+
+  web:
+    image: tech-store
+    container_name: tech-store-web
+    build: .
+    command: >
+      bash -c "python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
+    restart: unless-stopped
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      DEBUG: ${DEBUG}
+      DATABASE_URL: ${DATABASE_URL}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.envrc
+    depends_on:
+      - db
+
+volumes:
+  postres_data:
