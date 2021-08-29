@@ -36,6 +36,10 @@ run: db-start ## Django runserver
 	$(CMD) ./manage.py runserver
 
 # ------------------------------------ Code Style ------------------------------------
+
+self: ## linting and checking Makefile (see https://github.com/mrtazz/checkmake)
+	go run ~/go/src/github.com/mrtazz/checkmake Makefile
+
 style: ## check style with `flake8`
 	$(CMD) flake8 $(PROJECT_ROOT)
 
@@ -45,12 +49,12 @@ types: ## check types with `mypy`
 isort: ## sort imports with `isort`
 	$(CMD) isort $(PROJECT_ROOT)
 
-tests: ## run Django unit tests
+unit-tests: ## run Django unit tests
 	$(CMD) ./manage.py test
 
 .PHONY: check
-check: ## do a full check (isort, style, types, tests)
-	make -j4 isort style types tests
+check: self ## do a full check (isort, style, types, unit-tests)
+	make -j4 isort style types unit-tests
 
 # ------------------------------------ Test Coverage ------------------------------------
 
@@ -117,3 +121,11 @@ docker-rm-none: ## remove all dangling images (tagged as <none>)
 docker-clean: ## delete all containers and images
 	docker rm -f $$(docker ps -aq)
 	docker rmi -f $$(docker images -q)
+
+# ------------------------------------ Base Targets ------------------------------------
+
+.PHONY: all
+all: migrate run ## make migrate and run `Django` runserver
+
+.PHONY: test ## run `coverage` and view report
+test: unit-tests coverage view-coverage
