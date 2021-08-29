@@ -127,5 +127,5 @@ docker-clean: ## delete all containers and images
 .PHONY: all
 all: migrate run ## make migrate and run `Django` runserver
 
-.PHONY: test ## run `coverage` and view report
-test: unit-tests coverage view-coverage
+.PHONY: test
+test: coverage view-coverage ## run `coverage` and view report
