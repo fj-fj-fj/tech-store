@@ -1,32 +1,119 @@
-PROJECT_ROOT = .
-CMD = poetry run
+PROJECT_ROOT := .
+DATABASE := postgresql
+DOCKER_SERVICE := web
+CMD := poetry run
+PYTHON := python3
 
-db:
-	sudo service postgresql start
+.PHONY: help
+help: ## Show help message
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / \
+		{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-run: db
-	$(CMD) ./manage.py runserver
+.DEFAULT_GOAL := help
 
-style:
-	$(CMD) flake8 $(PROJECT_ROOT)
+.PHONY: start-service
+start-service: ## service <SERVICE> start if <SERVICE> not starting
+	sudo -i service $(SERVICE) status > /dev/null || sudo service $(SERVICE) start
 
-types:
-	$(CMD) mypy $(PROJECT_ROOT)
+# ------------------------------------ Database ------------------------------------
 
-isort:
-	$(CMD) isort $(PROJECT_ROOT)
+.PHONY: db-start
+db-start: ## Database engine start
+	make start-service SERVICE=$(DATABASE)
 
-tests:
-	$(CMD) ./manage.py test
+.PHONY: migrations
+migrations: ## makemigrations with descriptive name (e.g make migrations "do_something")
+	$(CMD) ./manage.py makemigrations --name $(filter-out $@, $(MAKECMDGOALS))
 
-check:
-	make -j4 isort style types tests
-
-migrations:
-	$(CMD) ./manage.py makemigrations
+.PHONY: migrate
+migrate: migrations ## migrate
 	$(CMD) ./manage.py migrate
 
-clean:
-	rm -rf build dist *.egg-info
-	find . -name '*.pyc' -delete
-	find . -name __pycache__ -delete
+# ------------------------------------ Run Server ------------------------------------
+
+.PHONY: run
+run: db-start ## Django runserver
+	$(CMD) ./manage.py runserver
+
+# ------------------------------------ Code Style ------------------------------------
+style: ## check style with `flake8`
+	$(CMD) flake8 $(PROJECT_ROOT)
+
+types: ## check types with `mypy`
+	$(CMD) mypy $(PROJECT_ROOT)
+
+isort: ## sort imports with `isort`
+	$(CMD) isort $(PROJECT_ROOT)
+
+tests: ## run Django unit tests
+	$(CMD) ./manage.py test
+
+.PHONY: check
+check: ## do a full check (isort, style, types, tests)
+	make -j4 isort style types tests
+
+# ------------------------------------ Test Coverage ------------------------------------
+
+.PHONY: coverage
+coverage: ## Run tests with coverage
+	$(CMD) coverage run --source='.' ./manage.py test .
+	$(CMD) coverage report -m
+	$(CMD) coverage html
+
+.PHONY: view-coverage
+view-coverage:  ## View code coverage
+	$(PYTHON) -m webbrowser htmlcov/index.html
+
+# ------------------------------------ Clean Up ------------------------------------
+.PHONY: clean
+clean: clean-pyc, clean-test ## remove all, test, coverage and Python artifacts
+
+clean-pyc: ## remove Python file artifacts
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+
+clean-test: ## remove test and coverage artifacts
+	GLOBIGNORE=.gitkeep
+	rm -fv ./reports/.coverage
+	rm -fv reports/cover/*
+	unset GLOBIGNORE
+
+# ------------------------------------ Docker ------------------------------------
+
+.PHONY: docker-start
+docker-start: ## Docker engine start
+	make start-service SERVICE=docker
+
+.PHONY: docker-build
+docker-build: docker-start ## Build the container
+	docker-compose build --build-arg GIT_COMMIT=$$(git rev-parse --short HEAD 2>/dev/null)
+
+.PHONY: docker-run
+docker-run: ## Run the container
+	docker-compose up -d
+
+.PHONY: docker-up
+docker-up: docker-build docker-run ## Build the container and run
+
+.PHONY: docker-cli
+docker-cli: ## get into console of container
+	docker-compose exec $(DOCKER_SERVICE) bash
+
+.PHONY: docker-stop
+docker-stop: ## stop all containers
+	docker stop $$(docker ps -aq)
+
+.PHONY: docker-rm-stopped
+docker-rm-stopped: ## remove all stopped containers
+	docker rm $$(docker ps -aqf status=exited)
+
+.PHONY: docker-rm-none
+docker-rm-none: ## remove all dangling images (tagged as <none>)
+	docker rmi $$(docker images -qf dangling=true)
+
+.PHONY: docker-clean
+docker-clean: ## delete all containers and images
+	docker rm -f $$(docker ps -aq)
+	docker rmi -f $$(docker images -q)
