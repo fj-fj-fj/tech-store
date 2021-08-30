@@ -1,15 +1,23 @@
 import socket
 from typing import List
 
+import snoop
 from configurations import values
 
 from core.settings.base import BaseConfiguration
+from core.settings.mixins import UtilsDevMixin
 
 
-class Development(BaseConfiguration):
+class Development(BaseConfiguration, UtilsDevMixin):
+
+    def __init__(self) -> None:
+        super().__init__()
+        # `snoop`, `pp`, and `spy` will be available in every file
+        # without needing to import them
+        snoop.install(enabled=True, watch_extras=[self.type_watch])
 
     SECRET_KEY = values.SecretValue(environ_name='SECRET_KEY')
-
+    DEBUG = values.BooleanValue(True)
     ALLOWED_HOSTS = ['*']
     INTERNAL_IPS = values.ListValue([
         'localhost',

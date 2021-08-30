@@ -1,7 +1,6 @@
 from pathlib import Path
-from typing import Any, List, Tuple
+from typing import List
 
-import snoop
 from configurations import Configuration, values
 
 
@@ -92,14 +91,6 @@ class BaseConfiguration(Configuration):
     STATICFILES_DIRS = (
         BASE_DIR / 'static',
     )
-
-    # https://pypi.org/project/snoop/#watch_extras
-    def type_watch(source: str, value: Any) -> Tuple[str, Any]:
-        return f'type({source})', type(value)
-
-    # `snoop`, `pp`, and `spy` will be available in every file without needing to import them
-    # https://pypi.org/project/snoop/#install
-    snoop.install(enabled=DEBUG, watch_extras=[type_watch])
 
     SILENCED_SYSTEM_CHECKS = [
         # Allow index names >30 characters, because we aren’t using Oracle
