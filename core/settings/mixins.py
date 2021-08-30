@@ -14,3 +14,7 @@ class UtilsDevMixin:
         see https://pypi.org/project/snoop/#watch_extras
         """
         return f'type({source})', type(value)
+
+    @staticmethod
+    def repr_value(source: str, value: Any) -> Tuple[str, str]:
+        return f'repr({source})', repr(value)
