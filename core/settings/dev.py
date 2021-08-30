@@ -14,7 +14,7 @@ class Development(BaseConfiguration, UtilsDevMixin):
         super().__init__()
         # `snoop`, `pp`, and `spy` will be available in every file
         # without needing to import them
-        snoop.install(enabled=True, watch_extras=[self.type_watch, self.repr_value])
+        snoop.install.__get__(object)(enabled=True, watch_extras=[self.type_watch, self.repr_value])
 
     SECRET_KEY = values.SecretValue(environ_name='SECRET_KEY')
     DEBUG = values.BooleanValue(True)
