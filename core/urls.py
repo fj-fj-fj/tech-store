@@ -3,16 +3,23 @@ from typing import List, Union
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http.response import HttpResponse
 from django.urls import include, path
 from django.urls.resolvers import URLResolver
 
-URL = Union[URLResolver, object]
-URLList = List[URL]
+URLList = List[Union[URLResolver, object]]
 
-urlpatterns: URLList = [
+core_urlpatterns: URLList = [
+    path('~', lambda request: HttpResponse('🙃'), name='root'),
     path('admin/', admin.site.urls),
+]
+
+apps_urlpatterns: URLList = [
+    path('accounts/', include('accounts.urls')),
     path('tasks/', include('task_manager.urls')),
 ]
+
+urlpatterns = core_urlpatterns + apps_urlpatterns
 
 if settings.DEBUG:
     if 'debug_toolbar' in settings.INSTALLED_APPS:
