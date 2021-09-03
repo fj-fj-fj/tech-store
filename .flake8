@@ -8,3 +8,4 @@ exclude =
     tests
 per-file-ignores =
     **/models.py: VNE003
+builtins = snoop
