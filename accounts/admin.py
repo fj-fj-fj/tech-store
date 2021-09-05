@@ -5,4 +5,4 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('last_update', 'date_joined')

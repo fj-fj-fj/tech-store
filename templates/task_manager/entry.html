@@ -15,7 +15,7 @@
       <div class="body-login">
         <form action="{% url 'task_manager:entry' %}" method="POST">
           {% csrf_token %}
-          {{ form.non_field_errors }}  
+          {{ form.non_field_errors }}
           {% for field in form.visible_fields %}
             {{ field.errors }}
             {{ field }}
@@ -26,7 +26,7 @@
         <div class="under-text-modal">
           <p>
             Нет учетной записи? <br>
-            Начните создавать! <a class="a-text" href="#">Зарегистрируйтесь!</a>
+            Начните создавать! <a class="a-text" href="{% url 'task_manager:signup' %}">Зарегистрируйтесь!</a>
           </p>
         </div>
       </div>

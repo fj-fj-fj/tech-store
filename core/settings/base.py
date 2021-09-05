@@ -13,6 +13,10 @@ class BaseConfiguration(Configuration):
     ALLOWED_HOSTS: List[str] = []
 
     AUTH_USER_MODEL = 'accounts.User'
+    LOGIN_REDIRECT_URL = 'task_manager:index'
+    LOGOUT_REDIRECT_URL = 'task_manager:entry'
+    LOGIN_URL = 'task_manager:entry'
+
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     DATABASES = values.DatabaseURLValue(environ_name='DATABASE_URL')
 

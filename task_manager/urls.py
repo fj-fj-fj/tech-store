@@ -3,12 +3,13 @@ from typing import List
 from django.urls import path
 from django.urls.resolvers import URLPattern
 
-from .views import EntryView, HomePageView
-
-URLList = List[URLPattern]
+from task_manager.views import EntryView, EmployeeCreateView, HomePageView
 
 app_name = 'task_manager'
-urlpatterns: URLList = [
-    path('main/', HomePageView.as_view(), name='index'),
+urlpatterns: List[URLPattern] = [
+    path('main/', HomePageView.as_view(
+
+    ), name='index'),
     path('entry/', EntryView.as_view(), name='entry'),
+    path('signup/', EmployeeCreateView.as_view(), name='signup'),
 ]

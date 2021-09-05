@@ -1,5 +1,7 @@
 from django.db import models
 
+from accounts.models import User
+
 
 class Avatar(models.Model):
 
@@ -13,49 +15,6 @@ class Avatar(models.Model):
         db_table = 'avatar'
         verbose_name = 'Аватар'
         verbose_name_plural = 'Аватары'
-
-
-class Employee(models.Model):
-
-    name = models.CharField('Никнэйм', max_length=100, default='')
-    username = models.CharField('Имя', max_length=200, default='')
-    password = models.CharField('Пароль', max_length=250)
-    date_create = models.DateTimeField('Дата создания', auto_now_add=True)
-    curator = models.ForeignKey(
-        'self',
-        on_delete=models.DO_NOTHING,
-        blank=True,
-        null=True,
-        verbose_name='Идентификатор куратор'
-    )
-    last_update = models.DateTimeField('Обновлён', auto_now=True)
-    email = models.CharField('Почта', max_length=150, default='')
-    avatar = models.ForeignKey(
-        Avatar,
-        on_delete=models.DO_NOTHING,
-        verbose_name='Идентификатор аватара'
-    )
-    actived = models.BooleanField('Активен', default=True)
-    deleted = models.BooleanField('Удалён', default=False)
-    rate = models.FloatField('Рэйтинг', default=0.)
-
-    def __str__(self) -> str:
-        return f'Сотрудник: {self.username} | Ник: {self.name}'
-
-    class Meta:
-        db_table = 'employee'
-        verbose_name = 'Сотрудник'
-        verbose_name_plural = 'Сотрудники'
-        indexes = [
-            models.indexes.Index(
-                fields=['avatar_id'],
-                name='employee_avatar_idx',
-            ),
-            models.indexes.Index(
-                fields=['curator_id'],
-                name='employee_curator_idx',
-            ),
-        ]
 
 
 class EmployeeType(models.Model):
@@ -83,7 +42,7 @@ class Project(models.Model):
     description = models.CharField('Описание', max_length=250)
     date_create = models.DateTimeField('Дата создания', auto_now_add=True)
     author = models.ForeignKey(
-        Employee,
+        User,
         on_delete=models.DO_NOTHING,
         verbose_name='Создатель сотрудник'
     )
@@ -97,7 +56,7 @@ class Project(models.Model):
     last_update = models.DateTimeField('Обновлён', auto_now=True)
 
     def __str__(self) -> str:
-        return f'Проект: {self.name}, автор: {self.author.name}'
+        return f'Проект: {self.name}, автор: {self.author.username}'
 
     class Meta:
         db_table = 'project'
@@ -127,7 +86,7 @@ class ProjectEmployee(models.Model):
         verbose_name='Проект'
     )
     employee = models.ForeignKey(
-        Employee,
+        User,
         on_delete=models.DO_NOTHING,
         verbose_name='Сотрудник'
     )
@@ -138,7 +97,7 @@ class ProjectEmployee(models.Model):
     )
 
     def __str__(self) -> str:
-        return f'Сотрудник: {self.employee.name} в проекте: {self.project.name}'
+        return f'Сотрудник: {self.employee.username} в проекте: {self.project.name}'
 
     class Meta:
         db_table = 'project_employee'
@@ -225,7 +184,7 @@ class Task(models.Model):
     last_update = models.DateTimeField('Обновлён', auto_now=True)
 
     def __str__(self) -> str:
-        return (f'Задача: {self.name}, автор: {self.author.employee.name},'
+        return (f'Задача: {self.name}, автор: {self.author.employee.username},'
                 ' исполнитель: {self.executor.employee.name}')
 
     class Meta:
@@ -285,14 +244,14 @@ class TaskComment(models.Model):
     )
     comment = models.CharField('Комментарий', max_length=250)
     employee = models.ForeignKey(
-        Employee,
+        User,
         on_delete=models.DO_NOTHING,
         verbose_name='Сотрудник'
     )
     last_update = models.DateTimeField('Обновлено', auto_now=True)
 
     def __str__(self) -> str:
-        return f'Комментарий {self.id} к задаче: "{self.task.name}" от {self.employee.name}'
+        return f'Комментарий {self.id} к задаче: "{self.task.name}" от {self.employee.username}'
 
     class Meta:
         db_table = 'task_comment'
@@ -328,13 +287,13 @@ class TaskEmployee(models.Model):
         verbose_name='Задача'
     )
     employee = models.ForeignKey(
-        Employee,
+        User,
         on_delete=models.DO_NOTHING,
         verbose_name='Сотрудник'
     )
 
     def __str__(self) -> str:
-        return f'Задача: {self.task.name} (проект:{self.project.name}) для {self.employee.name}'
+        return f'Задача: {self.task.name} (проект:{self.project.name}) для {self.employee.username}'
 
     class Meta:
         db_table = 'task_employee'
@@ -381,7 +340,7 @@ class TaskFile(models.Model):
     filename = models.CharField('Название файла', max_length=200)
     date_create = models.DateTimeField('Дата создания', auto_now_add=True)
     employee = models.ForeignKey(
-        Employee,
+        User,
         on_delete=models.DO_NOTHING,
         verbose_name='Сотрудник'
     )

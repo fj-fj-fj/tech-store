@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import (
     Avatar,
-    Employee,
     EmployeeType,
     Project,
     ProjectEmployee,
@@ -20,11 +19,6 @@ from .models import (
 @admin.register(Avatar)
 class AvatarAdmin(admin.ModelAdmin):
     pass
-
-
-@admin.register(Employee)
-class EmployeeAdmin(admin.ModelAdmin):
-    readonly_fields = ('last_update', 'date_create')
 
 
 @admin.register(EmployeeType)
