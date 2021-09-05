@@ -88,6 +88,20 @@ clean-test: ## remove test and coverage artifacts
 	rm -fv reports/cover/*
 	unset GLOBIGNORE
 
+# ------------------------------------ Requirements ------------------------------------
+
+REQUIREMETNS_DIR = ./requirements/
+
+.PHONY: update-requirements-files
+update-requirements-files: ## poetry export requirements > ./requirements/{base.txt,locals.txt}
+	@poetry export -f requirements.txt --without-hashes > $(REQUIREMETNS_DIR)base.tmp
+	@cp $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)base.txt
+	@echo '-r ./base.txt\n' > $(REQUIREMETNS_DIR)locals.txt
+	@poetry export -f requirements.txt --without-hashes --dev > $(REQUIREMETNS_DIR)locals.tmp
+	@# Remove common lines between two files
+	@grep -vf $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)locals.tmp >> $(REQUIREMETNS_DIR)locals.txt
+	@rm $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)locals.tmp
+
 # ------------------------------------ Docker ------------------------------------
 
 .PHONY: docker-start
