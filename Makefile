@@ -26,8 +26,12 @@ migrations: ## makemigrations with descriptive name (e.g make migrations "do_som
 	$(CMD) ./manage.py makemigrations --name $(filter-out $@, $(MAKECMDGOALS))
 
 .PHONY: migrate
-migrate: migrations ## migrate
+migrate: ## manage.py migrate
 	$(CMD) ./manage.py migrate
+
+.PHONY: dbshell
+dbshell: ## manage.py dbshell
+	$(CMD) ./manage.py dbshell
 
 # ------------------------------------ Run Server ------------------------------------
 
