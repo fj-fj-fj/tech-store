@@ -107,6 +107,14 @@ update-requirements-files: ## poetry export requirements > ./requirements/{base.
 	@grep -vf $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)locals.tmp >> $(REQUIREMETNS_DIR)locals.txt
 	@rm $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)locals.tmp
 
+.PHONY: install
+install: ## add new base requirements with auto-update requirements/{base.txt,locals.txt}
+	poetry add $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
+
+.PHONY: install-dev
+install-dev: ## add new local requirements with auto-update requirements/{base.txt,locals.txt}
+	poetry add --dev $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
+
 # ------------------------------------ Docker ------------------------------------
 
 .PHONY: docker-start

@@ -1,4 +1,4 @@
--r ./requirements/base.txt
+-r ./base.txt
 
 appdirs==1.4.4; python_version >= "3.6"
 appnope==0.1.2; sys_platform == "darwin" and python_version >= "3.7"
@@ -12,7 +12,6 @@ certifi==2021.5.30; python_version >= "2.7" and python_full_version < "3.0.0" or
 charset-normalizer==2.0.4; python_full_version >= "3.6.0" and python_version >= "3"
 cheap-repr==0.4.6
 click==8.0.1; python_version >= "3.6"
-colorama==0.4.4; python_version >= "3.7" and python_full_version < "3.0.0" and sys_platform == "win32" and platform_system == "Windows" or sys_platform == "win32" and python_version >= "3.7" and python_full_version >= "3.5.0" and platform_system == "Windows"
 coverage==5.5; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0" and python_version < "4")
 decorator==5.0.9; python_version >= "3.7"
 django-debug-toolbar==3.2.2; python_version >= "3.6"
@@ -48,6 +47,7 @@ packaging==21.0; python_version >= "3.6"
 parso==0.8.2; python_version >= "3.7"
 pexpect==4.8.0; sys_platform != "win32" and python_version >= "3.7"
 pickleshare==0.7.5; python_version >= "3.7"
+pip-install-test==0.5
 pluggy==0.13.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 prompt-toolkit==3.0.19; python_full_version >= "3.6.1" and python_version >= "3.7"
 ptpython==3.0.19; python_version >= "3.6"
