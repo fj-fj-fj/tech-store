@@ -20,6 +20,8 @@ class BaseConfiguration(Configuration):
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     DATABASES = values.DatabaseURLValue(environ_name='DATABASE_URL')
 
+    ADMIN_BASE_URL = values.Value(environ_name='ADMIN_BASE_URL')
+
     DJANGO_APPS = [
         'django.contrib.admin',
         'django.contrib.auth',
@@ -29,6 +31,7 @@ class BaseConfiguration(Configuration):
         'django.contrib.staticfiles',
     ]
     THIRD_PARTY_APPS = [
+        'admin_honeypot',
         'django_extensions',
     ]
     LOCAL_APPS = [

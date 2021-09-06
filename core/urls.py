@@ -11,7 +11,8 @@ URLList = List[Union[URLResolver, object]]
 
 core_urlpatterns: URLList = [
     path('~', lambda request: HttpResponse('🙃'), name='root'),
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path(settings.ADMIN_BASE_URL, admin.site.urls),
 ]
 
 apps_urlpatterns: URLList = [

@@ -192,6 +192,14 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-admin-honeypot"
+version = "1.1.0"
+description = "A fake Django admin login screen to notify admins of attempted unauthorized access."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "django-configurations"
 version = "2.2"
 description = "A helper for organizing Django settings."
@@ -900,7 +908,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b2aed2a7dd91b6527b66e4b1a9cab4d1359450d3545117d7b2fdee2875f1aad7"
+content-hash = "c3455bda0443cbf5eade5fc1e2f65a0f34afe2773369cf34638a332b2fcf7c66"
 
 [metadata.files]
 appdirs = [
@@ -1023,6 +1031,10 @@ dj-database-url = [
 django = [
     {file = "Django-3.2.6-py3-none-any.whl", hash = "sha256:7f92413529aa0e291f3be78ab19be31aefb1e1c9a52cd59e130f505f27a51f13"},
     {file = "Django-3.2.6.tar.gz", hash = "sha256:f27f8544c9d4c383bbe007c57e3235918e258364577373d4920e9162837be022"},
+]
+django-admin-honeypot = [
+    {file = "django-admin-honeypot-1.1.0.tar.gz", hash = "sha256:e18a52832b82740917737873c6f34117d15631565e9e4b7dbb9df48a29250796"},
+    {file = "django_admin_honeypot-1.1.0-py2.py3-none-any.whl", hash = "sha256:88e72753f5cbda88d909292d9f3fe7741fb74a8afad083f96e86114238f9b364"},
 ]
 django-configurations = [
     {file = "django-configurations-2.2.tar.gz", hash = "sha256:9e3bcea1355ac50a4c9f854f751d214cb17e5f8adf18405a4488d0a1e8945915"},

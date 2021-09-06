@@ -73,8 +73,9 @@ view-coverage:  ## View code coverage
 	$(PYTHON) -m webbrowser htmlcov/index.html
 
 # ------------------------------------ Clean Up ------------------------------------
+
 .PHONY: clean
-clean: clean-pyc, clean-test ## remove all, test, coverage and Python artifacts
+clean: clean-pyc, clean-test, clean-honeypot-ghosts ## remove all, test, coverage and Python artifacts
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -87,6 +88,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fv ./reports/.coverage
 	rm -fv reports/cover/*
 	unset GLOBIGNORE
+
+clean-honeypot-ghosts: ## remove fake admin artifacts
+	rm -f -- QSND}JJ ; rm -f -- z
+	git rm -f --ignore-unmatch QSND}JJ z
 
 # ------------------------------------ Requirements ------------------------------------
 
