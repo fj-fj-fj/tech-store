@@ -51,7 +51,7 @@ types: ## check types with `mypy`
 	$(CMD) mypy $(PROJECT_ROOT)
 
 isort: ## sort imports with `isort`
-	$(CMD) isort $(PROJECT_ROOT)
+	$(CMD) isort $(PROJECT_ROOT) --color
 
 unit-tests: ## run Django unit tests
 	$(CMD) ./manage.py test
