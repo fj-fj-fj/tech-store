@@ -3,7 +3,7 @@ from typing import List
 from django.urls import path
 from django.urls.resolvers import URLPattern
 
-from task_manager.views import EntryView, EmployeeCreateView, HomePageView
+from task_manager.views import EmployeeCreateView, EntryView, HomePageView
 
 app_name = 'task_manager'
 urlpatterns: List[URLPattern] = [

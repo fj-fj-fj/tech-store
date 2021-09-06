@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
 
-from task_manager.forms import EmployeeEntryForm, EmployeeCreationForm
 from accounts.models import User as Employee
+from task_manager.forms import EmployeeCreationForm, EmployeeEntryForm
 
 
 class HomePageView(ListView):
