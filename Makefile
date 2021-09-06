@@ -115,6 +115,14 @@ install: ## add new base requirements with auto-update requirements/{base.txt,lo
 install-dev: ## add new local requirements with auto-update requirements/{base.txt,locals.txt}
 	poetry add --dev $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
 
+.PHONY: remove
+remove: ## remove a package from base requirements with auto-update requirements/{base.txt,locals.txt}
+	poetry remove $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
+
+.PHONY: remove-dev
+remove-dev: ## remove a package from local requirements with auto-update requirements/{base.txt,locals.txt}
+	poetry remove --dev $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
+
 # ------------------------------------ Docker ------------------------------------
 
 .PHONY: docker-start

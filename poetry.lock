@@ -614,14 +614,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "pip-install-test"
-version = "0.5"
-description = "A minimal stub package to test success of pip install"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "pluggy"
 version = "0.13.1"
 description = "plugin and hook calling mechanisms for python"
@@ -916,7 +908,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ceac78899b8cfbee2bd1e2044eb8682a620307b11557961288810ccb6842bc58"
+content-hash = "125e98b7feb04e988cbb0d7dd47c6cbb7b24c7c9f7ee73b0ce2b5d0ba44cf804"
 
 [metadata.files]
 appdirs = [
@@ -1300,10 +1292,6 @@ pexpect = [
 pickleshare = [
     {file = "pickleshare-0.7.5-py2.py3-none-any.whl", hash = "sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"},
     {file = "pickleshare-0.7.5.tar.gz", hash = "sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca"},
-]
-pip-install-test = [
-    {file = "pip-install-test-0.5.tar.gz", hash = "sha256:c33c46ced9865b59963e86e54901947520bdb73bf91849cddbb000742598bb67"},
-    {file = "pip_install_test-0.5-py3-none-any.whl", hash = "sha256:623887f5ce0b4695ec3c0503aa4f394253a403e2bb952417b3a778f0802dbe0b"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
