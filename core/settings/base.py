@@ -21,6 +21,13 @@ class BaseConfiguration(Configuration):
     DATABASES = values.DatabaseURLValue(environ_name='DATABASE_URL')
 
     ADMIN_BASE_URL = values.Value(environ_name='ADMIN_BASE_URL')
+    EMAIL_BACKEND = values.Value('django.core.mail.backends.smtp.EmailBackend')
+    EMAIL_TIMEOUT = 5
+    ADMINS = [
+        ('fj-fj-fj', values.Value(environ_name='ADMIN_BASE_EMAIL')),
+    ]
+    MANAGERS = ADMINS
+    ACCOUNT_EMAIL_VERIFICATION = 'none'
 
     DJANGO_APPS = [
         'django.contrib.admin',
