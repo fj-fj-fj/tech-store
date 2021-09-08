@@ -1,0 +1,92 @@
+#!/bin/bash
+# Post-(install|update|add|remove) script with Python Poetry
+# Regenerate requirements/{base.txt,locals.txt}
+# https://github.com/python-poetry/poetry/issues/265
+#   https://github.com/python-poetry/poetry/issues/265#issuecomment-468934338
+
+# Remove "QSND}JJ" and "z" empty files (`django-admin-honeypot` artifacts?).
+# Perhaps `django-admin-honeypot` is not to blame, but it all started after its installation.
+_clean_unknown_trash() {
+  make clean-honeypot-ghosts
+}
+
+# Regenerate requirements/{base.txt,locals.txt} and run `_clean_unknown_trash`.
+_pip_freeze() {
+  poetry export --format requirements.txt --without-hashes > ./requirements/base.tmp
+  cp ./requirements/base.tmp ./requirements/base.txt
+  echo -e "-r ./base.txt\n" > ./requirements/locals.txt
+  poetry export --format requirements.txt --without-hashes --dev > ./requirements/locals.tmp
+  # Insert the symmetric difference of two sets into ./requirements/locals.txt
+  # (`grep -vf` removes common lines between two files).
+  grep -vf ./requirements/base.tmp ./requirements/locals.tmp >> ./requirements/locals.txt
+
+  echo "Freezed! Base=$(wc -l < ./requirements/base.txt) Locals=$(($(wc -l < ./requirements/locals.txt)-2))"
+
+  # Clean up unnecessary files.
+  rm ./requirements/base.tmp ./requirements/locals.tmp
+  _clean_unknown_trash
+}
+
+# Read the "pyproject.toml" file from the current project,
+# resolve the dependencies, install them and run `_pip_freeze`.
+# Options `--no-dev', `--remove-untracked`, `--extras` (`-E`), `--no-root` not tested.
+# See https://python-poetry.org/docs/cli/#install
+poetry_install() {
+  poetry install "$@" && _pip_freeze
+}
+
+# Get the latest versions of the dependencies, update "poetry.lock" file and run `_pip_freeze`
+# Options `--dry-run`, `--no-dev', `--lock` not tested.
+# See https://python-poetry.org/docs/cli/#update
+poetry_update() {
+  poetry update "$@" && _pip_freeze
+}
+
+# Install one or more packages with `poetry` and run `_pip_freeze`.
+# Options `--dev`, `-D` is optional.
+# Options `--path`, `--optional`, `--dry-run`, `--lock` not tested.
+# See https://python-poetry.org/docs/cli/#add
+poetry_add() {
+  poetry add $@ && _pip_freeze
+}
+
+# Remove one or more packages with `poetry` and run `_pip_freeze`.
+# Options `--dev`, `-D` is optional.
+# Option `--dry-run` not tested.
+# See https://python-poetry.org/docs/cli/#remove
+poetry_remove() {
+  poetry remove $@ && _pip_freeze
+}
+
+# Excecute one of the "requirements-tasks"
+case $1 in
+  install|i)
+    shift 1
+    poetry_install "$@"
+  ;;
+  update|u)
+    shift 1
+    poetry_update "$@"
+  ;;
+  add|a)
+    shift 1
+    poetry_add "$@"
+  ;;
+  remove|rm)
+    shift 1
+    poetry_remove "$@"
+  ;;
+  *)
+    echo "-------------------------------------------------------"
+    echo "Usage: $(basename ${0}) <command> [<options>] [<package>|<packages>]"
+    echo "-------------------------------------------------------"
+    echo ""
+    echo "- run install|i: poetry install && _pip_freeze"
+    echo "- run update|u: poetry update && _pip_freeze"
+    echo "- run add|a [--dev|-D] [<pkg1>] ... [<pkgN>]: poetry add dependencies && _pip_freeze"
+    echo "- run remove|rm [--dev|-D] [<pkg1>] ... [<pkgN>]: poetry remove dependencies && _pip_freeze"
+    echo ""
+    exit 1
+esac
+
+git diff --stat ./requirements/

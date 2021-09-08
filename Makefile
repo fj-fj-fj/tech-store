@@ -90,38 +90,8 @@ clean-test: ## remove test and coverage artifacts
 	unset GLOBIGNORE
 
 clean-honeypot-ghosts: ## remove fake admin artifacts
-	rm -f -- QSND}JJ ; rm -f -- z
-	git rm -f --ignore-unmatch QSND}JJ z
-
-# ------------------------------------ Requirements ------------------------------------
-
-REQUIREMETNS_DIR = ./requirements/
-
-.PHONY: update-requirements-files
-update-requirements-files: ## poetry export requirements > ./requirements/{base.txt,locals.txt}
-	@poetry export -f requirements.txt --without-hashes > $(REQUIREMETNS_DIR)base.tmp
-	@cp $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)base.txt
-	@echo '-r ./base.txt\n' > $(REQUIREMETNS_DIR)locals.txt
-	@poetry export -f requirements.txt --without-hashes --dev > $(REQUIREMETNS_DIR)locals.tmp
-	@# Remove common lines between two files
-	@grep -vf $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)locals.tmp >> $(REQUIREMETNS_DIR)locals.txt
-	@rm $(REQUIREMETNS_DIR)base.tmp $(REQUIREMETNS_DIR)locals.tmp
-
-.PHONY: install
-install: ## add new base requirements with auto-update requirements/{base.txt,locals.txt}
-	poetry add $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
-
-.PHONY: install-dev
-install-dev: ## add new local requirements with auto-update requirements/{base.txt,locals.txt}
-	poetry add --dev $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
-
-.PHONY: remove
-remove: ## remove a package from base requirements with auto-update requirements/{base.txt,locals.txt}
-	poetry remove $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
-
-.PHONY: remove-dev
-remove-dev: ## remove a package from local requirements with auto-update requirements/{base.txt,locals.txt}
-	poetry remove --dev $(filter-out $@, $(MAKECMDGOALS)) && make update-requirements-files
+	@rm -f -- QSND}JJ ; rm -f -- z
+	@git rm -f --ignore-unmatch QSND}JJ z
 
 # ------------------------------------ Docker ------------------------------------
 
