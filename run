@@ -4,27 +4,19 @@
 # https://github.com/python-poetry/poetry/issues/265
 #   https://github.com/python-poetry/poetry/issues/265#issuecomment-468934338
 
-# Remove "QSND}JJ" and "z" empty files (`django-admin-honeypot` artifacts?).
-# Perhaps `django-admin-honeypot` is not to blame, but it all started after its installation.
-_clean_unknown_trash() {
-  make clean-honeypot-ghosts
-}
 
-# Regenerate requirements/{base.txt,locals.txt} and run `_clean_unknown_trash`.
+# Regenerate requirements/{base.txt,locals.txt}.
 _pip_freeze() {
   poetry export --format requirements.txt --without-hashes > ./requirements/base.tmp
   cp ./requirements/base.tmp ./requirements/base.txt
   echo -e "-r ./base.txt\n" > ./requirements/locals.txt
   poetry export --format requirements.txt --without-hashes --dev > ./requirements/locals.tmp
   # Insert the symmetric difference of two sets into ./requirements/locals.txt
-  # (`grep -vf` removes common lines between two files).
   grep -vf ./requirements/base.tmp ./requirements/locals.tmp >> ./requirements/locals.txt
 
   echo "Freezed! Base=$(wc -l < ./requirements/base.txt) Locals=$(($(wc -l < ./requirements/locals.txt)-2))"
 
-  # Clean up unnecessary files.
   rm ./requirements/base.tmp ./requirements/locals.tmp
-  _clean_unknown_trash
 }
 
 # Read the "pyproject.toml" file from the current project,
@@ -58,7 +50,7 @@ poetry_remove() {
   poetry remove $@ && _pip_freeze
 }
 
-# Excecute one of the "requirements-tasks"
+# Excecute one of the requirements-tasks
 case $1 in
   install|i)
     shift 1
