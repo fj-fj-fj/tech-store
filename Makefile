@@ -39,8 +39,35 @@ dbshell: ## manage.py dbshell
 run: db-start ## Django runserver
 	$(CMD) ./manage.py runserver
 
+# ------------------------------------ Security ------------------------------------
+
+warnings: ## find temporary fixes, forgotten notes and/or possible issues with `grep`
+	grep --color="always" --include="*.py" -i -r -n -w $(PROJECT_ROOT) \
+		-e 'FIXME\|issue\|problem\|nosec'
+
+# NOTE: installme (see ./requirements/make.txt)
+gitleaks: ## audit Git repository for sercrets with `Gitleaks`
+	gitleaks --path=$(PROJECT_ROOT) --verbose
+
+# NOTE: `-r`(`--recursive`) arguments ignore `exclude:` in `.bandit` file
+# but `-x`(`--exclude`) arguments work here.
+bandit: ## find common security issues in Python code with `Bandit`
+	$(CMD) bandit --recursive $(PROJECT_ROOT)
+
+safety: ## check installed dependencies for known vulnerabilities with `Safety`
+	$(CMD) safety check -r requirements/locals.txt --full-report
+
+.PHONY: security
+security: gitleaks bandit safety ## `make gitlieaks bandit safety`
+
+.PHONY: security-full
+security-full: security warnings ## `make security warnings`
+
+sec: security-full ## shortcat for `security-full`
+
 # ------------------------------------ Code Style ------------------------------------
 
+# NOTE: installme (see ./requirements/make.txt)
 self: ## linting and checking Makefile (see https://github.com/mrtazz/checkmake)
 	go run ~/go/src/github.com/mrtazz/checkmake Makefile
 
@@ -57,7 +84,7 @@ unit-tests: ## run Django unit tests
 	$(CMD) ./manage.py test
 
 .PHONY: check
-check: self ## do a full check (isort, style, types, unit-tests)
+check: self ## do a full check (self, isort, style, types, unit-tests)
 	make -j4 isort style types unit-tests
 
 # ------------------------------------ Test Coverage ------------------------------------
