@@ -1,0 +1,13 @@
+# [require]
+git
+python3
+python3-pip
+python3-venv
+postgresql
+
+# [optional]
+# see also ./make.txt
+direnv
+docker
+make
+poetry

@@ -1,7 +1,7 @@
-# tagret `self`
-https://github.com/mrtazz/checkmake#installation
+# tagret: `self`
+# - https://github.com/mrtazz/checkmake#installation
 checkmake
 
-# target `gitleaks`
-https://github.com/zricethezav/gitleaks#installation
+# target: `gitleaks`
+# - https://github.com/zricethezav/gitleaks#installation
 gitleaks
