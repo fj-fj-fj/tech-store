@@ -1,4 +1,5 @@
 # http://editorconfig.org
+# https://github.com/editorconfig/editorconfig/wiki
 
 root = True
 
@@ -8,14 +9,14 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{py,ini}]
+[{*.py,*.ini}]
 indent_style = space
 indent_size = 4
 
 [*.py]
 line_lenth = 119
 
-[*.{html,css,json,yml}]
+[{*.html,*.css,*.json,*.yml}]
 indent_style = space
 indent_size = 2
 
@@ -24,3 +25,9 @@ indent_style = tab
 
 [docs/**.txt]
 max_line_length = 79
+
+[{*.markdown,*.mdown,*.mkdn,*.md}]
+trim_trailing_whitespace = false
+
+# NOTE:
+# - https://github.com/editorconfig/editorconfig-vscode/issues/153#issuecomment-395479392
