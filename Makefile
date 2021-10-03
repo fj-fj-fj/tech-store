@@ -60,9 +60,9 @@ safety: ## check installed dependencies for known vulnerabilities with `Safety`
 .PHONY: security
 security: gitleaks bandit safety ## `make gitlieaks bandit safety`
 
-.PHONY: security-full
 security-full: security warnings ## `make security warnings`
 
+.PHONY: sec
 sec: security-full ## shortcat for `security-full`
 
 # ------------------------------------ Code Style ------------------------------------
