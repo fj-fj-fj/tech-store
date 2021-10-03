@@ -7,9 +7,7 @@ from task_manager.views import EmployeeCreateView, EntryView, HomePageView
 
 app_name = 'task_manager'
 urlpatterns: List[URLPattern] = [
-    path('main/', HomePageView.as_view(
-
-    ), name='index'),
+    path('main/', HomePageView.as_view(), name='index'),
     path('entry/', EntryView.as_view(), name='entry'),
     path('signup/', EmployeeCreateView.as_view(), name='signup'),
 ]

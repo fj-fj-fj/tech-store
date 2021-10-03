@@ -15,7 +15,7 @@ class EntryView(FormView):
 
     form_class = EmployeeEntryForm
     template_name = 'task_manager/entry.html'
-    success_url = reverse_lazy('task_manager:main')
+    success_url = reverse_lazy('task_manager:index')
 
 
 class EmployeeCreateView(CreateView):
@@ -23,4 +23,4 @@ class EmployeeCreateView(CreateView):
     models = Employee
     form_class = EmployeeCreationForm
     template_name = 'task_manager/signup.html'
-    success_url = reverse_lazy('task_manager:main')
+    success_url = reverse_lazy('task_manager:index')
