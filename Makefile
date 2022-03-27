@@ -15,6 +15,16 @@ help: ## Show help message
 start-service: ## service <SERVICE> start if <SERVICE> not starting
 	sudo -i service $(SERVICE) status > /dev/null || sudo service $(SERVICE) start
 
+# see https://github.com/python-poetry/poetry/issues/461#issuecomment-920663114
+.PHONY: req
+req: ## poetry update requirements(all)
+	@poetry show -o -t --no-dev | grep -v -e "--" | cut -d " " -f 1 | sed 's/$$/\@latest/g' > ../no_dev.txt &&\
+	poetry show -o -t | grep -v -e "--" | cut -d " " -f 1 | sed 's/$$/\@latest/g' > ../all.txt &&\
+	join --nocheck-order -v1 -v2 ../all.txt ../no_dev.txt > ../dev.txt &&\
+	cat ../no_dev.txt | xargs poetry add &&\
+	cat ../dev.txt | xargs poetry add --dev &&\
+	./run freeze
+
 # ------------------------------------ Database ------------------------------------
 
 .PHONY: db-start

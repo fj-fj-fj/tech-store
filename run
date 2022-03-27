@@ -68,6 +68,10 @@ case $1 in
     shift 1
     poetry_remove "$@"
   ;;
+  freeze|f)
+    shift 1
+    _pip_freeze
+  ;;
   *)
     echo "-------------------------------------------------------"
     echo "Usage: $(basename ${0}) <command> [<options>] [<package>|<packages>]"
@@ -77,6 +81,7 @@ case $1 in
     echo "- run update|u: poetry update && _pip_freeze"
     echo "- run add|a [--dev|-D] [<pkg1>] ... [<pkgN>]: poetry add dependencies && _pip_freeze"
     echo "- run remove|rm [--dev|-D] [<pkg1>] ... [<pkgN>]: poetry remove dependencies && _pip_freeze"
+    echo "- run freeze|f:  _pip_freeze"
     echo ""
     exit 1
 esac
